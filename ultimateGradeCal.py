@@ -99,7 +99,9 @@ def getCollabsFromFile(filename):
     return collabs
 
 def parseGrades(grades):
-    format = {4.0:2.0, 3.0:1.5,2.0:1.5,1.0:1.3}
+    format = {}
+    if len(format) == 0:
+        return grades
     for key in grades:
         grades[key] = format[float(grades[key])]
     return grades
@@ -119,48 +121,50 @@ def parseCollabs(content, collabs,colNo):
                     content[word][colNo] = content[collab][colNo] = "2.0" #unable it so that everyone gets 2.0
                 # print(content[word][colNo],content[collab][colNo])
 
+if __name__ == "__main__":
+    if len(sys.argv)<4:
+        print ("Usage: python ultimateGradeCal.py compassScores.csv labSec({A,B,..,Q}) labNo({00,01...15}) [collabs:Y/N]")
+        exit(1)
+    csvfilename = sys.argv[1]
+    labSec = sys.argv[2]
+    aNo = sys.argv[3]
+    #grades = getGrade(labSec,aNo)
+    from lab00_grade import readFileAndGrade
+    grades = readFileAndGrade(glob.glob("/home/hcheng17/cs101-fa17/lab00subs/*"))
 
-if len(sys.argv)<4:
-    print ("Usage: python csvUpdater.py compassScores.csv labSec({A,B,..,Q}) labNo({00,01...15}) [collabs:Y/N]")
-    exit(1)
-csvfilename = sys.argv[1]
-labSec = sys.argv[2]
-aNo = sys.argv[3]
-grades = getGrade(labSec,aNo)
-# print (grades)
+    grades = parseGrades(grades)
 
-grades = parseGrades(grades)
-
-collabs = {}
-if len(sys.argv)==5:
-    collabs = getCollabs(aNo)
-    # print (collabs)
-with open(csvfilename,'r') as f:
-    fileContent = f.readlines()
-    headers = fileContent[0].strip().split(',')
-    colNo = 0
-    netidNo = 0
-    fileOutput = {} # dict of lists
-    for i in range(len(headers)):
-        # print(str(aNo[3:]))
-        if headers[i].find("lab "+str(aNo))>-1:
-            colNo = i
-        if headers[i].find("Username")>-1:
-            netidNo = i
-    for line in fileContent[1:]:
-        line = line.strip().split(',')
-        netid = line[netidNo].strip('"')
-        # print (netid)
-        if netid in grades:
-            line[colNo] = str(grades[netid])
-            # print (line[colNo])
-            fileOutput[netid]=(line.copy())
-        else:
-            fileOutput[netid]=(line.copy())
-    parseCollabs(fileOutput, collabs,colNo)
-    print (fileContent[0].strip())
-    # print (fileOutput)
-    for netid in fileOutput:
-        line = ','.join(fileOutput[netid])
-        print (line)
+    collabs = {}
+    if len(sys.argv)==5 and sys.argv[-1] != 'N':
+        collabs = getCollabs(aNo)
+        # print (collabs)
+    with open(csvfilename,'r') as f:
+        fileContent = f.readlines()
+        headers = fileContent[0].strip().split(',')
+        colNo = 0
+        netidNo = 0
+        fileOutput = {} # dict of lists
+        for i in range(len(headers)):
+            # print(str(aNo[3:]))
+            if headers[i].find("lab "+str(aNo))>-1:
+                colNo = i
+            if headers[i].find("Username")>-1:
+                netidNo = i
+        for line in fileContent[1:]:
+            line = line.strip().split(',')
+            netid = line[netidNo].strip('"')
+            # print (netid)
+            if netid in grades:
+                line[colNo] = str(grades[netid])
+                # print (line[colNo])
+                fileOutput[netid]=(line.copy())
+            else:
+                line[colNo] = '0' # Set empty ones to 0
+                fileOutput[netid]=(line.copy())
+        parseCollabs(fileOutput, collabs,colNo)
+        print (fileContent[0].strip())
+        # print (fileOutput)
+        for netid in fileOutput:
+            line = ','.join(fileOutput[netid])
+            print (line)
 

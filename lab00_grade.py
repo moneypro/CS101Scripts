@@ -1,4 +1,4 @@
-import glob, sys
+import sys
 from numpy import isclose
 
 correctAnswers = {
@@ -15,6 +15,14 @@ correctAnswers = {
 	"B15": 3.1415926536,
 	"B16": 0
 }
+
+def getIdFromPath(path):
+	'''
+	/home/hcheng17/cs101-fa17/lab00subs/zz23@illinois.edu.txt
+	-> zz23
+	'''
+	return path[path.rfind('/')+1:path.rfind('@')]
+
 
 def coordsToIndex(excelCoords):
 	'''
@@ -36,9 +44,14 @@ def coordsToIndex(excelCoords):
 
 def assertContain(arr, coords, answer):
 	row, col = coordsToIndex(coords)
-	if isclose(float(arr[row][col]), answer):
-		return 1
-	else:
+	try: 
+		if isclose(float(arr[col][row]), answer):
+			return 1
+		else:
+			return 0
+	except ValueError:
+		return 0
+	except IndexError:
 		return 0
 
 def gradeContent(arr):
@@ -46,18 +59,25 @@ def gradeContent(arr):
 	Take a 2d array, and return the similarity normalized.
 	'''
 	total_correct = 0
-	for coords, answer in correctAnswers:
+	for coords, answer in correctAnswers.items():
 		total_correct += assertContain(arr, coords, answer)
 	return total_correct / len(correctAnswers)
 
-def readFile():
+def readFileAndGrade(filenames):
 	'''
-	Read file from path given in sys.argv glob.
+	Read file from path given in filenames.
+	return a dictionary of grades (id, score(normalized))
 	'''
-	filenames = glob.glob(sys.argv[1])
+	grades = {}
 	for filename in filenames:
 		with open(filename) as f:
-			content = f.readlines()
+			try:
+				content = f.readlines()
+			except UnicodeDecodeError:
+				continue
 			arr = [line.strip().split(',') for line in content]
-			print (gradeContent(arr))
+			grades[getIdFromPath(filename)] = gradeContent(arr)
+	return grades
 
+if __name__ == "__main__":
+	print (readFileAndGrade(sys.argv[1:]))
