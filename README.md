@@ -1,5 +1,5 @@
 ### UltimteGradeCal.py ###
-It is one we only need if everything works out. Put it under /class/cs101/grading/AY{A,B,...R} and run it with "python ultimateGradeCal.py compass2g.csv labSec({A,B,...R} labNo({00,01,...12}) [collabs:Y/N]". It will print out the a csv file, so it is better to pipe it to a file.
+It is one we only need if everything works out. Put it in EWS Linux environment and run it with "python ultimateGradeCal.py compass2g.csv labSec({A,B,...R} labNo({00,01,...12}) [collabs:Y/N]". It will print out the a csv file, so it is better to pipe it to a file.
 The compass2g.csv file is the file downloaded from compass2G. It contains the netid, full name and lab grades. The only part matters is the netid, and the header column for the labNo. (lab{00,...,14}).
 The output csv file should be uploaded back to compass2G using the same interface when downloading. To match the output file with compass, the csv file needs to have a unique id in the header column, which can be retrieved in compass.
 

@@ -3,9 +3,9 @@ import glob, sys
 import string
 from nbgrader.api import Gradebook
 
-def getCollabs(labNo):
+def getCollabs(labSec, labNo):
     collabs = {} # to return
-    files = glob.glob("submitted/*/lab"+labNo+"/lab"+labNo+".ipynb")
+    files = glob.glob("/class/cs101/grading/AY"+labSec+"/submitted/*/lab"+labNo+"/lab"+labNo+".ipynb")
     from string import whitespace as w
     from string import punctuation as p
     from string import printable
@@ -64,7 +64,7 @@ def getGradeFromFile(filename):
             grades[line[0]] = float(line[1])
         collabs = {}
         if len(sys.argv)==5: # Using collabs
-            collabs = getCollabs(sys.argv[4])
+            collabs = getCollabs(sys.argv[3], sys.argv[4])
         for submitter in collabs:
             netidlist = collabs [submitter]
             if submitter in grades: # They should be, if not, print error I guess
@@ -136,13 +136,14 @@ if __name__ == "__main__":
 
     collabs = {}
     if len(sys.argv)==5 and sys.argv[-1] != 'N':
-        collabs = getCollabs(aNo)
+        collabs = getCollabs(labSec, aNo)
         # print (collabs)
     with open(csvfilename,'r') as f:
         fileContent = f.readlines()
         headers = fileContent[0].strip().split(',')
         colNo = 0
         netidNo = 0
+        sectionNo = 0
         fileOutput = {} # dict of lists
         for i in range(len(headers)):
             # print(str(aNo[3:]))
@@ -150,12 +151,14 @@ if __name__ == "__main__":
                 colNo = i
             if headers[i].find("Username")>-1:
                 netidNo = i
+            if headers[i].find("Section")>-1:
+                sectionNo = i
         for line in fileContent[1:]:
             line = line.strip().split(',')
             netid = line[netidNo].strip('"')
             # print (netid)
             if netid in grades:
-                line[colNo] = str(grades[netid])
+                line[colNo] = str(grades[netid]+1)
                 # print (line[colNo])
                 fileOutput[netid]=(line.copy())
             else:
@@ -165,6 +168,9 @@ if __name__ == "__main__":
         print (fileContent[0].strip())
         # print (fileOutput)
         for netid in fileOutput:
-            line = ','.join(fileOutput[netid])
-            print (line)
+            section = fileOutput[netid][sectionNo].strip()
+            # print (section[-2])
+            if section[-2]=="F" or section[-2]=='G':
+                line = ','.join(fileOutput[netid])
+                print (line)
 
