@@ -100,6 +100,5 @@ def hw01(S1, S2):
                 else:
                     return False
         return True
-    # if the answer is correst, it must contain '/'
     else:
         return False
