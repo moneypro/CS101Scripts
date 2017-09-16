@@ -7,9 +7,10 @@ def hw01(S1, S2):
     """
     S1: the answer
     S2: the formula student inputs
-    In this part, we have two kinds of formula:
+    In this part, we have three kinds of formula:
     - all operators are times(*) and divide(/)
-    - using function of VLOOKUP
+    - using function of VLOOKUP (the 2nd parameter must be the minimum table)
+    - using function of MMULT
     """
 
     # make both stings to lower case
@@ -27,9 +28,9 @@ def hw01(S1, S2):
         return True
     elif 'vlookup' in s1:
         # get the parameters of VLOOKUP function
-        s1_split = s1.lstrip('=vlookup(')
+        s1_split = s1.lstrip('vlookup(')
         s1_split = s1_split.rstrip(')')
-        s2_split = s2.lstrip('=vlookup(')
+        s2_split = s2.lstrip('vlookup(')
         s2_split = s2_split.rstrip(')')
 
         s1_paras = [x.strip() for x in s1_split.split(',')]
@@ -53,9 +54,9 @@ def hw01(S1, S2):
         return True
     elif 'mmult' in s1:
         # get the parameters of vlookup function
-        s1_split = s1.lstrip('=mmult(')
+        s1_split = s1.lstrip('mmult(')
         s1_split = s1_split.rstrip(')')
-        s2_split = s2.lstrip('=mmult(')
+        s2_split = s2.lstrip('mmult(')
         s2_split = s2_split.rstrip(')')
 
         s1_paras = [x.strip() for x in s1_split.split(',')]
