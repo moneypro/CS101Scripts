@@ -2,8 +2,23 @@
 
 import numpy as np
 
+correctAnswers = {
+    "C2": 1e-10,
+    "C3": 1e-9,
+    "C4": 1e-6,
+    "C5": 1e-2,
+    "C6": 1e+3,
+    "C7": 3.0857e+16,
+    "C8": 2.54e-2,
+    "C9": 0.3048,
+    "C10": 1609.344,
+    "C12": 0.3106855961,
+    "B15": 3.1415926536,
+    "B16": 0
+}
 
-def hw01(S1, S2):
+
+def assertSameHw01(S1, S2):
     """
     S1: the answer
     S2: the formula student inputs
@@ -18,9 +33,9 @@ def hw01(S1, S2):
     s2 = S2.lower()
 
     # kick out '=' symbol and space
-    s1 = s1.strip('=')
+    s1 = s1.strip('=').strip('\ufeff').replace("'","").replace('"',"").replace('$','')
     s1 = s1.strip()
-    s2 = s2.strip('=')
+    s2 = s2.strip('=').strip('\ufeff').replace("'","").replace('"',"").replace('$','')
     s2 = s2.strip()
 
     # start comparing
@@ -102,4 +117,10 @@ def hw01(S1, S2):
         return True
     # if the answer is correst, it must contain '/'
     else:
-        return False
+        try: 
+            if np.isclose(float(s1), float(s2), rtol=2e-2):
+                return True
+            else:
+                return False
+        except ValueError:
+            return True

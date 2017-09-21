@@ -129,10 +129,10 @@ if __name__ == "__main__":
     labSec = sys.argv[2]
     aNo = sys.argv[3]
     #grades = getGrade(labSec,aNo)
-    from lab00_grade import readFileAndGrade
-    grades = readFileAndGrade(glob.glob("/home/hcheng17/cs101-fa17/lab00subs/*"))
-
-    grades = parseGrades(grades)
+    from relate_grade import readFileAndGrade
+    grades = readFileAndGrade(glob.glob("/home/hcheng17/cs101-fa17/lab01subs/*"))
+    # print (grades)
+    # grades = parseGrades(grades)
 
     collabs = {}
     if len(sys.argv)==5 and sys.argv[-1] != 'N':
@@ -158,7 +158,7 @@ if __name__ == "__main__":
             netid = line[netidNo].strip('"')
             # print (netid)
             if netid in grades:
-                line[colNo] = str(grades[netid]+1)
+                line[colNo] = str(grades[netid])
                 # print (line[colNo])
                 fileOutput[netid]=(line.copy())
             else:
@@ -168,9 +168,8 @@ if __name__ == "__main__":
         print (fileContent[0].strip())
         # print (fileOutput)
         for netid in fileOutput:
-            section = fileOutput[netid][sectionNo].strip()
-            # print (section[-2])
-            if section[-2]=="F" or section[-2]=='G':
+            section = fileOutput[netid][sectionNo].strip()[-2]
+            if section == labSec:
                 line = ','.join(fileOutput[netid])
                 print (line)
 
