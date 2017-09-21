@@ -1,3 +1,8 @@
+### Lab 01 Grading ###
+Just run python ultimateGradeCal.py <Section> 01 > output.csv
+
+Do it for each section, and upload two csv files to compass.
+
 ### UltimteGradeCal.py ###
 It is one we only need if everything works out. Put it in EWS Linux environment and run it with "python ultimateGradeCal.py compass2g.csv labSec({A,B,...R} labNo({00,01,...12}) [collabs:Y/N]". It will print out the a csv file, so it is better to pipe it to a file.
 The compass2g.csv file is the file downloaded from compass2G. It contains the netid, full name and lab grades. The only part matters is the netid, and the header column for the labNo. (lab{00,...,14}).
