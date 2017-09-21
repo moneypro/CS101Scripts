@@ -29,6 +29,8 @@ def coordsToIndex(excelCoords):
 	return (row, col)
 
 def assertSame(actual, answer):
+	if actual[-1] == '%':
+		actual = float(actual[:-1])/100
 	try: 
 		if isclose(float(actual), answer, rtol=0.025):
 			return 1
@@ -71,7 +73,7 @@ def gradeContent(arr):
 		except IndexError:
 			# print ('IndexError')
 			continue
-	return total_correct / len(correctAnswers) + 1 # Only for lab 01
+	return total_correct / len(correctAnswers) * 2 # Only for lab 01
 
 def readFileAndGrade(filenames):
 	'''
