@@ -33,9 +33,11 @@ def assertSameHw01(S1, S2):
     s2 = S2.lower()
 
     # kick out '=' symbol and space
-    s1 = s1.strip('=').strip('\ufeff').replace("'","").replace('"',"").replace('$','')
+    # s1 = s1.strip('=').strip('\ufeff').replace("'","").replace('"',"").replace('$','')
+    s1 = s1.strip('=')
     s1 = s1.strip()
-    s2 = s2.strip('=').strip('\ufeff').replace("'","").replace('"',"").replace('$','')
+    # s2 = s2.strip('=').strip('\ufeff').replace("'","").replace('"',"").replace('$','')
+    s2 = s2.strip('=')
     s2 = s2.strip()
 
     # start comparing
@@ -64,6 +66,10 @@ def assertSameHw01(S1, S2):
         # we assume s1 contains the minimum table which shoule be used
         s1_2nd = s1_paras[1].split(':')
         s2_2nd = s2_paras[1].split(':')
+        # check whether using fixed symbol '$'
+        for i in range(len(s1_2nd)):
+            s1_2nd[i] = ''.join(s1_2nd[i].split('$'))
+            s2_2nd[i] = ''.join(s2_2nd[i].split('$'))
         if s1_2nd[0] < s2_2nd[0] or s1_2nd[1] > s2_2nd[1]:
             return False
         return True
@@ -74,14 +80,21 @@ def assertSameHw01(S1, S2):
         s2_split = s2.lstrip('mmult(')
         s2_split = s2_split.rstrip(')')
 
-        s1_paras = [x.strip() for x in s1_split.split(',')]
-        s2_paras = [x.strip() for x in s2_split.split(',')]
+        pre_s1_paras = [x.strip() for x in s1_split.split(',')]
+        pre_s2_paras = [x.strip() for x in s2_split.split(',')]
+        s1_paras = []
+        s2_paras = []
+        for i in range(len(pre_s1_paras)):
+            s1_paras.extend([x.strip() for x in pre_s1_paras[i].split(':')])
+            s2_paras.extend([x.strip() for x in pre_s2_paras[i].split(':')])
+        # check whether using fixed symbol '$'
+        for i in range(len(s1_paras)):
+            s1_paras[i] = ''.join(s1_paras[i].split('$'))
+            s2_paras[i] = ''.join(s2_paras[i].split('$'))
         if s1_paras == s2_paras:
             return True
-        # MMULT have at most 4 parameters
-        if s1_paras != s2_paras:
+        else:
             return False
-        return True
     elif '/' in s1:
         # kick out space and parathenses
         pre_s1_split = [x.strip() for x in s1.split('/')]
@@ -116,7 +129,7 @@ def assertSameHw01(S1, S2):
                     return False
         return True
     else:
-        try: 
+        try:
             if np.isclose(float(s1), float(s2), rtol=2e-2):
                 return True
             else:
