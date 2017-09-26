@@ -37,15 +37,15 @@ def getCollabs(labSec, labNo):
 '''
 No longer need to generate extract_grades file.
 '''
-def getGrade(section,labNo):
+def getGrade(section, labNo):
     # labSec = sys.argv[1]
+    print (section, labNo)
     labSec = "AY"+section
-    gb = Gradebook('sqlite:////class/cs101/grading/'+labSec+'/gradebook.db')
+    gb = Gradebook('sqlite:////class/cs101/etc/sxns/'+labSec+'/gradebook.db')
     ourIds = []
     aNo = "lab" + labNo
     grades = {}
-    #print (gb.assignment_submissions)
-    for s in gb.assignment_submissions(aNo):
+    for s in gb.assignmentni_submissions(aNo):
         if s.student_id not in ourIds:
             grades[s.student_id] = s.score
             # print(s.student_id, s.score)#, s.timestamp.isoformat())
@@ -128,11 +128,12 @@ if __name__ == "__main__":
     csvfilename = sys.argv[1]
     labSec = sys.argv[2]
     aNo = sys.argv[3]
-    #grades = getGrade(labSec,aNo)
-    from lab00_grade import readFileAndGrade
-    grades = readFileAndGrade(glob.glob("/home/hcheng17/cs101-fa17/lab00subs/*"))
-
-    grades = parseGrades(grades)
+    from extract_grades import extract_grades
+    grades = extract_grades(labSec,aNo)
+    # from relate_grade import readFileAndGrade
+    # grades = readFileAndGrade(glob.glob("/home/hcheng17/cs101-fa17/lab01/subs/*"))
+    # print (grades)
+    # grades = parseGrades(grades)
 
     collabs = {}
     if len(sys.argv)==5 and sys.argv[-1] != 'N':
@@ -158,19 +159,18 @@ if __name__ == "__main__":
             netid = line[netidNo].strip('"')
             # print (netid)
             if netid in grades:
-                line[colNo] = str(grades[netid]+1)
+                line[colNo] = str(grades[netid])
                 # print (line[colNo])
                 fileOutput[netid]=(line.copy())
             else:
                 line[colNo] = '0' # Set empty ones to 0
                 fileOutput[netid]=(line.copy())
         parseCollabs(fileOutput, collabs,colNo)
-        print (fileContent[0].strip())
+        print (headers[netidNo]+','+headers[colNo])
         # print (fileOutput)
         for netid in fileOutput:
-            section = fileOutput[netid][sectionNo].strip()
-            # print (section[-2])
-            if section[-2]=="F" or section[-2]=='G':
-                line = ','.join(fileOutput[netid])
+            section = fileOutput[netid][sectionNo].strip()[-2]
+            if section == labSec:
+                line = ','.join([fileOutput[netid][netidNo], fileOutput[netid][colNo]])
                 print (line)
 
