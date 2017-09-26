@@ -1,12 +1,17 @@
 from nbgrader.api import Gradebook
 import sys
-labSec = sys.argv[1]
-labSec = "AY"+labSec
-gb = Gradebook('sqlite:////class/cs101/grading/'+labSec+'/gradebook.db')
-ourIds = []
-aNo = sys.argv[2]
-aNo = "lab" + aNo
-#print (gb.assignment_submissions)
-for s in gb.assignment_submissions(aNo):
-        if s.student_id not in ourIds:
-                print(s.student_id, s.score)#, s.timestamp.isoformat())
+
+def extract_grades(labSec, aNo):
+    labSec = "AY"+labSec
+    gb = Gradebook('sqlite:////class/cs101/etc/sxns/'+labSec+'/gradebook.db')
+    aNo = "lab" + aNo
+    grades = {}
+    #print (gb.assignment_submissions)
+    for s in gb.assignment_submissions(aNo):
+        grades[s.student_id] = s.score
+    return grades
+
+if __name__ == "__main__":
+    grade = extract_grades(sys.argv[1], sys.argv[2])
+    for netid, score in grade.items():
+        print (netid, score)
