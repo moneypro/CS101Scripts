@@ -29,6 +29,9 @@ nbgrader autograde --student=netid labXX
 
 ### CS101 file directory ###
 nbgrader should be run under /class/cs101/etc/sxns/AY?
+
 /class/cs101/etc/sxns/AY?/submitted --student submission
+
 /class/cs101/etc/sxns/AY?/atuograded --graded jupyter-notebook. Need to remove the record here if you want to grade again
+
 /class/cs101/etc/sxns/AY?/feedback --feedback that will be sent to students
