@@ -16,3 +16,22 @@ This script extracts the collabs and send the email. This uses a python shell, b
 
 ### extract_grades.py ###
 It extracts the grades with "python extract_grades.py {A,B,...R} {00,01,...12}". The only part worth noting is that the lab number is always two digits due to Neal's preference. It is a faster way to check individual's grades when we don't need to update the csv files.
+
+### Some useful grading commmand ###
+To generate Feedback for each lab:
+nbgrader feedback --assignment=labXX --student==netid
+
+Email
+sh email.sh LabNo AY?
+
+Grade a single student’s lab:
+nbgrader autograde --student=netid labXX
+
+### CS101 file directory ###
+nbgrader should be run under /class/cs101/etc/sxns/AY?
+
+/class/cs101/etc/sxns/AY?/submitted --student submission
+
+/class/cs101/etc/sxns/AY?/atuograded --graded jupyter-notebook. Need to remove the record here if you want to grade again
+
+/class/cs101/etc/sxns/AY?/feedback --feedback that will be sent to students
