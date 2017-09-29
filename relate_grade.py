@@ -50,8 +50,8 @@ def compareTwoArr(actual, answer):
 			try:
 				if(hw01.assertSameHw01(answer[row][col], actual[row][col])):
 					total_correct+=1
-				# else:
-					# print ((answer[row][col], actual[row][col]))
+				else:
+					print ((answer[row][col], actual[row][col]))
 			except IndexError:
 				break
 	return total_correct / (len(rowRange)) / len(colRange)
@@ -102,20 +102,20 @@ def readFileByOneReference(answerFileName, filenames):
 		content = f.readlines()
 		ans = [line.strip().split(',') for line in content]
 	for filename in filenames:
-		with open(filename) as f:
+		with open(filename,'r',encoding='utf-8') as f:
 			try:
 				content = f.readlines()
 				arr = [line.strip().split(',') for line in content]
 				grades[getIdFromPath(filename)] = compareTwoArr(arr, ans)
 			except UnicodeDecodeError:
-				grades[getIdFromPath(filename)] = 0 # Syntax error.
+				grades[getIdFromPath(filename)] = -1 # Syntax error.
 	return grades
 
 if __name__ == "__main__":
-	# print (readFileByOneReference(sys.argv[1], sys.argv[2:]))
-	errors = {}
-	for key in correctAnswers:
-		errors[key] = 0
+	print (readFileByOneReference(sys.argv[1], sys.argv[2:]))
+	#errors = {}
+	#for key in correctAnswers:
+	#	errors[key] = 0
 
-	print (readFileAndGrade(sys.argv[1:]))
-	print (errors)
+	#print (readFileAndGrade(sys.argv[1:]))
+	#print (errors)

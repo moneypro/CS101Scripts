@@ -128,11 +128,10 @@ if __name__ == "__main__":
     csvfilename = sys.argv[1]
     labSec = sys.argv[2]
     aNo = sys.argv[3]
-    from extract_grades import extract_grades
-    grades = extract_grades(labSec,aNo)
-    # from relate_grade import readFileAndGrade
-    # grades = readFileAndGrade(glob.glob("/home/hcheng17/cs101-fa17/lab01/subs/*"))
-    # print (grades)
+    #from extract_grades import extract_grades
+    #grades = extract_grades(labSec,aNo)
+    from getValue0 import getHw1Score
+    grades = getHw1Score()
     # grades = parseGrades(grades)
 
     collabs = {}
@@ -148,7 +147,7 @@ if __name__ == "__main__":
         fileOutput = {} # dict of lists
         for i in range(len(headers)):
             # print(str(aNo[3:]))
-            if headers[i].find("lab "+str(aNo))>-1:
+            if headers[i].find("hw "+str(aNo))>-1:
                 colNo = i
             if headers[i].find("Username")>-1:
                 netidNo = i
@@ -170,7 +169,7 @@ if __name__ == "__main__":
         # print (fileOutput)
         for netid in fileOutput:
             section = fileOutput[netid][sectionNo].strip()[-2]
-            if section == labSec:
-                line = ','.join([fileOutput[netid][netidNo], fileOutput[netid][colNo]])
-                print (line)
+            # if section == labSec:
+            line = ','.join([fileOutput[netid][netidNo], fileOutput[netid][colNo]])
+            print (line)
 
