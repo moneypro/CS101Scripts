@@ -35,22 +35,6 @@ def getCollabs(labSec, labNo):
     return collabs
 
 '''
-No longer need to generate extract_grades file.
-'''
-def getGrade(section, labNo):
-    # labSec = sys.argv[1]
-    print (section, labNo)
-    labSec = "AY"+section
-    gb = Gradebook('sqlite:////class/cs101/etc/sxns/'+labSec+'/gradebook.db')
-    ourIds = []
-    aNo = "lab" + labNo
-    grades = {}
-    for s in gb.assignmentni_submissions(aNo):
-        if s.student_id not in ourIds:
-            grades[s.student_id] = s.score
-            # print(s.student_id, s.score)#, s.timestamp.isoformat())
-    return grades
-'''
 getGradeFromFile(filename) opens a file given by extract_grades.py
 in the format where each line is
 netid,score
@@ -128,10 +112,10 @@ if __name__ == "__main__":
     csvfilename = sys.argv[1]
     labSec = sys.argv[2]
     aNo = sys.argv[3]
-    #from extract_grades import extract_grades
-    #grades = extract_grades(labSec,aNo)
-    from getValue0 import getHw1Score
-    grades = getHw1Score()
+    from extract_grades import extract_grades
+    grades = extract_grades(labSec,aNo)
+    # from getValue0 import getHw1Score
+    # grades = getHw1Score()
     # grades = parseGrades(grades)
 
     collabs = {}
@@ -141,18 +125,22 @@ if __name__ == "__main__":
     with open(csvfilename,'r') as f:
         fileContent = f.readlines()
         headers = fileContent[0].strip().split(',')
-        colNo = 0
-        netidNo = 0
-        sectionNo = 0
+        colNo = -1
+        netidNo = -1
+        sectionNo = -1
+        availNo = -1
         fileOutput = {} # dict of lists
         for i in range(len(headers)):
-            # print(str(aNo[3:]))
-            if headers[i].find("hw "+str(aNo))>-1:
+            if headers[i].find("lab "+str(aNo))>-1:
                 colNo = i
             if headers[i].find("Username")>-1:
                 netidNo = i
             if headers[i].find("Section")>-1:
                 sectionNo = i
+            if headers[i].find("Availability")>-1:
+                availNo = i
+        if colNo == -1 or netidNo == -1 or sectionNo == -1 or availNo == -1:
+            raise ValueError("CSV file doesn't have all necessary columns.")          
         for line in fileContent[1:]:
             line = line.strip().split(',')
             netid = line[netidNo].strip('"')
@@ -166,10 +154,9 @@ if __name__ == "__main__":
                 fileOutput[netid]=(line.copy())
         parseCollabs(fileOutput, collabs,colNo)
         print (headers[netidNo]+','+headers[colNo])
-        # print (fileOutput)
         for netid in fileOutput:
             section = fileOutput[netid][sectionNo].strip()[-2]
-            # if section == labSec:
-            line = ','.join([fileOutput[netid][netidNo], fileOutput[netid][colNo]])
-            print (line)
+            if section == labSec and fileOutput[netid][availNo].find('Yes')>-1:
+                line = ','.join([fileOutput[netid][netidNo], fileOutput[netid][colNo]])
+                print (line)
 
