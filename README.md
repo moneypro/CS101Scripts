@@ -1,7 +1,10 @@
-### Lab 01 Grading ###
-Just run python ultimateGradeCal.py <Section> 01 > output.csv
+### inLab.py ###
+Generate a randomized seat map from a csv file.
 
-Do it for each section, and upload two csv files to compass.
+python inLab.py some.csv sectionNo
+
+Use r ComputerNo to remove down machines. (i.e. r 23)
+
 
 ### UltimteGradeCal.py ###
 It is one we only need if everything works out. Put it in EWS Linux environment and run it with "python ultimateGradeCal.py compass2g.csv labSec({A,B,...R} labNo({00,01,...12}) [collabs:Y/N]". It will print out the a csv file, so it is better to pipe it to a file.
