@@ -6,7 +6,7 @@ TODO:
 '''
 import sys, random
 if len(sys.argv) < 3:
-    print ("Usage: python inLab.py csvFromCompass.csv sectionNo")
+    print ("Usage: python inLab.py csvFromCompass.csv sectionNo. Seat 22 is automatically removed.")
 file = open(sys.argv[1])
 raw_content = file.readlines()
 file.close()
@@ -39,6 +39,7 @@ for line in raw_content[1:]:
 # be able to delete several students & seats
 assert (len(students) <= 41)
 rando = [i+1 for i in range(41)]
+rando.remove(22) # Remove instructor's seat
 
 def randomize():
     random.shuffle(rando)
