@@ -27,7 +27,8 @@ def getCollabs(labSec, labNo):
             for letter in collabsList:
                 if letter in printable:
                     sanitized+=letter
-            submitter = f.split("/")[1]
+            path = f.split("/")
+            submitter = path[path.index('submitted')+1]
             collabsList = sanitized.split(' ')
             for i in range(len(collabsList)):
                 collabsList[i] = collabsList[i].strip()
