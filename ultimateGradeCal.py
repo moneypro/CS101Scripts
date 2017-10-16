@@ -5,7 +5,7 @@ from nbgrader.api import Gradebook
 
 def getCollabs(labSec, labNo):
     collabs = {} # to return
-    files = glob.glob("/class/cs101/etc/sxns/AY"+labSec+"/submitted/*/lab"+labNo+"/lab"+labNo+".ipynb")
+    files = glob.glob("/class/cs101/etc/sxns/AY"+labSec+"/submitted/*/lab"+labNo+"/*.ipynb")
     from string import whitespace as w
     from string import punctuation as p
     from string import printable
@@ -13,7 +13,7 @@ def getCollabs(labSec, labNo):
     for f in files:
         with open(f) as openF:
             data = openF.read()
-            cell=data[data.find(featureTxt):data.find('lab'+labNo)]
+            cell=data[data.find(featureTxt):]
             names=cell[len(featureTxt):cell.find(']')][:-1]
             label='write them here'
             if label in names:
@@ -29,10 +29,12 @@ def getCollabs(labSec, labNo):
                     sanitized+=letter
             path = f.split("/")
             submitter = path[path.index('submitted')+1]
+            # print (submitter)
             collabsList = sanitized.split(' ')
             for i in range(len(collabsList)):
                 collabsList[i] = collabsList[i].strip()
             collabs[submitter] = collabsList
+    # print (collabs)
     return collabs
 
 '''
@@ -98,12 +100,13 @@ def parseCollabs(content, collabs,colNo):
     for collab in collabs:
         for word in collabs[collab]:
             if word in content:
+                # print (word, collab)
                 if content[word][colNo]!='':
                     if float(content[word][colNo])>float(content[collab][colNo]):
                         content[collab][colNo] = content[word][colNo]
                         continue
-                else:
-                    content[word][colNo] = content[collab][colNo] = "2.0" #unable it so that everyone gets 2.0
+                    else:
+                        content[word][colNo] = content[collab][colNo] #= "2.0" #unable it so that everyone gets 2.0
                 # print(content[word][colNo],content[collab][colNo])
 
 if __name__ == "__main__":
