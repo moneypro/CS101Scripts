@@ -5,7 +5,7 @@ from nbgrader.api import Gradebook
 
 def getCollabs(labSec, labNo):
     collabs = {} # to return
-    files = glob.glob("/class/cs101/grading/AY"+labSec+"/submitted/*/lab"+labNo+"/lab"+labNo+".ipynb")
+    files = glob.glob("/class/cs101/etc/sxns/AY"+labSec+"/submitted/*/lab"+labNo+"/lab"+labNo+".ipynb")
     from string import whitespace as w
     from string import punctuation as p
     from string import printable
