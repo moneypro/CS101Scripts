@@ -4,7 +4,7 @@ TODO:
 1) Save the partner information.
 2) Add adding name / workstation number features.
 '''
-import sys, random
+import sys, random, subprocess
 if len(sys.argv) < 3:
     print ("Usage: python inLab.py csvFromCompass.csv sectionNo. Seat 22 is automatically removed.")
 file = open(sys.argv[1])
@@ -25,7 +25,7 @@ for i in range(len(header)):
         availNo = i
 assert (fname_col != -1 and lname_col != -1 and netid_col != -1 and sectionNo != -1 and availNo != -1)
 students = {}
-print (netid_col,fname_col,lname_col)
+# print (netid_col,fname_col,lname_col)
 for line in raw_content[1:]:
     line = line.strip().split(',')
     section = line[sectionNo].strip('"')
@@ -56,10 +56,23 @@ def printInfo():
         output = t[1] + '\t' + t[2][0] + '\t' + t[-1]
         print (output)
 
+def sendEmail():
+    if len(students) == 0 or len(students[list(students.keys())[0]]) <= 2:
+        print ("Error, not generated.")
+    subject = "No-Reply: This weeks lab seat assignment"
+    for netid, info in students.items():
+        toAddr = netid + "@illinois.edu"
+        content = "Your seat for the lab is "+info[-1]
+        subprocess.call("mail -s '"+subject+"' "+toAddr+" <<<'"+content+"'", shell=True)
+randomize()
+printInfo()
 while True:
-    print ("(size of students) netids loaded. Enter 'p'/'print' to print them all. Enter 'd netid' to delete specific netids. Enter 'r WorkstationNo.' to remove it from random generation. Enter 'g' to generate.")
-    randomize()
-    printInfo()
+    print ("""(size of students) netids loaded. 
+        Enter 'p'/'print' to print them all. 
+        Enter 'd netid' to delete specific netids. 
+        Enter 'r WorkstationNo.' to remove it from random generation. 
+        Enter 'g' to generate.
+        Enter 's' to send emails of seat assignment.""")
     cmd = input()
     if cmd == 'print' or cmd=='p':
         printInfo()
@@ -72,3 +85,5 @@ while True:
         rando.remove(wsNo)
     elif cmd == 'g':
         randomize()
+    elif cmd == 's':
+        sendEmail()
