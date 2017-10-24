@@ -86,11 +86,9 @@ def getCollabsFromFile(filename):
     return collabs
 
 def parseGrades(grades):
-    format = {}
-    if len(format) == 0:
-        return grades
-    for key in grades:
-        grades[key] = format[float(grades[key])]
+    maxGrade = grades[max(grades, key=grades.get)]
+    for key, value in grades.items():
+        grades[key] = value / maxGrade * 2.0
     return grades
 
 def parseCollabs(content, collabs,colNo):
@@ -120,7 +118,7 @@ if __name__ == "__main__":
     grades = extract_grades(labSec,aNo)
     # from getValue0 import getHw1Score
     # grades = getHw1Score()
-    # grades = parseGrades(grades)
+    grades = parseGrades(grades)
 
     collabs = {}
     if len(sys.argv)==5 and sys.argv[-1] != 'N':
