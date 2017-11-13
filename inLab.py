@@ -76,7 +76,7 @@ def sendRandomNumber():
         vals[ i,2: ]  = ( npr.choice( prob2, size=(2,), replace=False ) )
     if len(students) == 0 or len(students[list(students.keys())[0]]) <= 2:
         print ("Error, not generated.")
-    subject = "No-Reply: Four SECRET numbers for this week's lab"
+    subject = "No-Reply: Four SECRET numbers for this week lab"
     _id = 0
     for netid, info in students.items():
         toAddr = netid + "@illinois.edu"
