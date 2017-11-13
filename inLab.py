@@ -64,6 +64,26 @@ def sendEmail():
         toAddr = netid + "@illinois.edu"
         content = "Your seat for the lab is "+info[-1]
         subprocess.call("mail -s '"+subject+"' "+toAddr+" <<<'"+content+"'", shell=True)
+
+def sendRandomNumber():
+    import numpy as np
+    import numpy.random as npr
+    prob1 = np.array( range( 7575,7642 ) )
+    prob2 = np.array( range( 5050,5098 ) )
+    vals = np.zeros( (len(students),4),dtype=np.int16 )
+    for i in range( vals.shape[0] ):
+        vals[ i,0:2 ] = ( npr.choice( prob1, size=(2,), replace=False ) )
+        vals[ i,2: ]  = ( npr.choice( prob2, size=(2,), replace=False ) )
+    if len(students) == 0 or len(students[list(students.keys())[0]]) <= 2:
+        print ("Error, not generated.")
+    subject = "No-Reply: Four SECRET numbers for this week's lab"
+    _id = 0
+    for netid, info in students.items():
+        toAddr = netid + "@illinois.edu"
+        content = "Your secret numbers are "+str(vals[_id])
+        subprocess.call("mail -s '"+subject+"' "+toAddr+" <<<'"+content+"'", shell=True)
+        _id +=1
+
 randomize()
 printInfo()
 while True:
@@ -87,3 +107,5 @@ while True:
         randomize()
     elif cmd == 's':
         sendEmail()
+    elif cmd.lower() == 'send random':
+        sendRandomNumber()
