@@ -85,16 +85,20 @@ if __name__ == "__main__":
         exit(1)
     csvfilename = sys.argv[1]
     labSec = sys.argv[2]
-    aNo = sys.argv[3]
+    aNo = sys.argv[3] if len(sys.argv[3]) == 2 else '0' + sys.argv[3]
     from extract_grades import extract_grades
-    grades = extract_grades(labSec,aNo)
+    grades = {}
+    for labSecChar in labSec:
+        grades.update(extract_grades(labSecChar,aNo))
     # from getValue0 import getHw1Score
     # grades = getHw1Score()
+    # print (grades)
     grades = parseGrades(grades)
 
     collabs = {}
     if len(sys.argv)==5 and sys.argv[-1] != 'N':
-        collabs = getCollabs(labSec, aNo)
+        for labSecChar in labSec:
+            collabs.update(getCollabs(labSecChar,aNo))
         # print (collabs)
     with open(csvfilename,'r') as f:
         fileContent = f.readlines()
@@ -130,7 +134,7 @@ if __name__ == "__main__":
         print (headers[netidNo]+','+headers[colNo])
         for netid in fileOutput:
             section = fileOutput[netid][sectionNo].strip()[-2]
-            if section == labSec and fileOutput[netid][availNo].find('Yes')>-1:
+            if section in labSec and fileOutput[netid][availNo].find('Yes')>-1:
                 line = ','.join([fileOutput[netid][netidNo], fileOutput[netid][colNo]])
                 print (line)
 
