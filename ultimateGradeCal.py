@@ -55,8 +55,12 @@ def getCollabsFromFile(filename):
 
 def parseGrades(grades):
     maxGrade = grades[max(grades, key=grades.get)]
-    for key, value in grades.items():
-        grades[key] = value / maxGrade * 2.0
+    if maxGrade != 0:
+        for key, value in grades.items():
+            grades[key] = value / maxGrade * 2.0
+    else:
+        for key, value in grades.items():
+            grades[key] = 2.0
     return grades
 
 def parseCollabs(content, collabs,colNo):
