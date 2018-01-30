@@ -68,7 +68,7 @@ def calcStats( df ):
     results_dict[ 'n_questions' ] = len( df.columns ) - 2
     results_dict[ 'n_students' ]  = len( df )
 
-    overall_col = clean_df[ clean_df.columns[ -1 ] ]
+    overall_col = df[ df.columns[ -1 ] ]
     results_dict[ 'score_min' ]   = overall_col.min()
     results_dict[ 'n_score_min' ] = len( overall_col.loc[ overall_col == overall_col.min() ] )
     results_dict[ 'score_max' ]   = overall_col.max()
