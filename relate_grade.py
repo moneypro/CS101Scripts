@@ -1,6 +1,6 @@
 import sys
 from numpy import isclose
-from lab01.lab01 import correctAnswers
+from hw01.hw01 import correctAnswers
 
 def getIdFromPath(path):
 	'''
@@ -29,9 +29,9 @@ def coordsToIndex(excelCoords):
 	return (row, col)
 
 def assertSame(actual, answer):
-	if actual[-1] == '%':
-		actual = float(actual[:-1])/100
 	try: 
+		if actual[-1] == '%':
+			actual = float(actual[:-1])/100
 		if isclose(float(actual), answer, rtol=0.025):
 			return 1
 		else:
@@ -73,7 +73,7 @@ def gradeContent(arr):
 		except IndexError:
 			# print ('IndexError')
 			continue
-	return total_correct / len(correctAnswers) * 2 # Only for lab 01
+	return total_correct / len(correctAnswers)# * 2 # Only for lab 01
 
 def readFileAndGrade(filenames):
 	'''
@@ -112,10 +112,6 @@ def readFileByOneReference(answerFileName, filenames):
 	return grades
 
 if __name__ == "__main__":
-	print (readFileByOneReference(sys.argv[1], sys.argv[2:]))
-	#errors = {}
-	#for key in correctAnswers:
-	#	errors[key] = 0
+	#print (readFileByOneReference(sys.argv[1], sys.argv[2:]))
+	print (readFileAndGrade(sys.argv[1:]))
 
-	#print (readFileAndGrade(sys.argv[1:]))
-	#print (errors)

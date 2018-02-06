@@ -6,13 +6,18 @@ import sys
 def getHw1Score():
     scores = [hw01gears, hw01heat, hw01matrix]
     grade = {}
+    errors = set()
     for d in scores:
         for key, value in d.items():
             value = value *2 /3
+            if value <= 0:
+                errors.add(key)
+                value = 0
             if key in grade:
                 grade[key] += value
             else:
                 grade[key] = value
+        # print (errors)
     return grade
 
 if __name__ == '__main__':

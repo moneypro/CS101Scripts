@@ -76,7 +76,7 @@ def parseCollabs(content, collabs,colNo):
                         content[collab][colNo] = content[word][colNo]
                         continue
                     else:
-                        content[word][colNo] = content[collab][colNo] #= "2.0" #unable it so that everyone gets 2.0
+                        content[word][colNo] = content[collab][colNo] = "2.0" #unable it so that everyone gets 2.0
                 # print(content[word][colNo],content[collab][colNo])
 
 if __name__ == "__main__":
@@ -117,7 +117,7 @@ if __name__ == "__main__":
                 sectionNo = i
             if headers[i].find("Availability")>-1:
                 availNo = i
-        if colNo == -1 or netidNo == -1 or sectionNo == -1 or availNo == -1:
+        if colNo == -1 or netidNo == -1 or sectionNo == -1:
             raise ValueError("CSV file doesn't have all necessary columns.")          
         for line in fileContent[1:]:
             line = line.strip().split(',')
