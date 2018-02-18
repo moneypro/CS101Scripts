@@ -93,8 +93,10 @@ if __name__ == "__main__":
     # from getValue0 import getHw1Score
     # grades = getHw1Score()
     # print (grades)
+    
+    # from lab01grades import lab01grades
+    # grades = lab01grades
     grades = parseGrades(grades)
-
     collabs = {}
     if len(sys.argv)==5 and sys.argv[-1] != 'N':
         for labSecChar in labSec:
@@ -109,7 +111,7 @@ if __name__ == "__main__":
         availNo = -1
         fileOutput = {} # dict of lists
         for i in range(len(headers)):
-            if headers[i].find("lab "+str(aNo))>-1:
+            if headers[i].find("lab"+str(aNo))>-1:
                 colNo = i
             if headers[i].find("Username")>-1:
                 netidNo = i
@@ -134,7 +136,8 @@ if __name__ == "__main__":
         print (headers[netidNo]+','+headers[colNo])
         for netid in fileOutput:
             section = fileOutput[netid][sectionNo].strip()[-2]
-            if section in labSec and fileOutput[netid][availNo].find('Yes')>-1:
+            if section in labSec: # and fileOutput[netid][availNo].find('Yes')>-1:
                 line = ','.join([fileOutput[netid][netidNo], fileOutput[netid][colNo]])
+                # line = ','.join(fileOutput[netid])
                 print (line)
 
