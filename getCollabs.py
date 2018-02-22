@@ -5,7 +5,7 @@ def getCollabs(labSec, labNo):
     from string import whitespace as w
     from string import punctuation as p
     from string import printable
-    featureTxt = "Double-click here to list collaborators' or partners' **NetIDs** here:"
+    featureTxt = "Double-click to list _all_ collaborators' or partners' **NetIDs** here:"
     for f in files:
         with open(f) as openF:
             data = openF.read()
