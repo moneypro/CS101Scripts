@@ -38,6 +38,7 @@ for line in raw_content[1:]:
 # Or size of map
 # be able to delete several students & seats
 assert (len(students) <= 41)
+print (len(students))
 rando = [i+1 for i in range(41)]
 rando.remove(22) # Remove instructor's seat
 
@@ -62,7 +63,7 @@ def sendEmail():
     subject = "No-Reply: This weeks lab seat assignment"
     for netid, info in students.items():
         toAddr = netid + "@illinois.edu"
-        content = "Your seat for the lab is "+info[-1]
+        content = "Your seat for the lab is "+info[-1] +"."
         subprocess.call("mail -s '"+subject+"' "+toAddr+" <<<'"+content+"'", shell=True)
 
 def sendRandomNumber():
