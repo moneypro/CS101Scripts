@@ -78,14 +78,20 @@ def parseCollabs(content, collabs,colNo):
                     else:
                         content[word][colNo] = content[collab][colNo] = "2.0" #unable it so that everyone gets 2.0
                 # print(content[word][colNo],content[collab][colNo])
-
+import argparse
 if __name__ == "__main__":
-    if len(sys.argv)<4:
-        print ("Usage: python ultimateGradeCal.py compassScores.csv labSec({A,B,..,Q}) labNo({00,01...15}) [collabs:Y/N]")
-        exit(1)
-    csvfilename = sys.argv[1]
-    labSec = sys.argv[2]
-    aNo = sys.argv[3] if len(sys.argv[3]) == 2 else '0' + sys.argv[3]
+    parser = argparse.ArgumentParser(description='Extract grades from NB grader and output compass compatible csv files.')
+    parser.add_argument('csv', metavar='gc...csv', nargs='?', help='csv downloaded from Compass (comma separated)')
+    parser.add_argument('section', metavar='{A-Q}', nargs='?', help='section names (multiple supported)')
+    parser.add_argument('no', metavar='XX', nargs='?', help='labNo')
+    parser.add_argument('--collabs', metavar="Y/N", nargs = '?', help = "Fetch collaborator information", default="Y")
+    # if len(sys.argv)<4:
+    #     print ("Usage: python ultimateGradeCal.py compassScores.csv labSec({A,B,..,Q}) labNo({00,01...15}) [collabs:Y/N]")
+    #     exit(1)
+    args = parser.parse_args()
+    csvfilename = args.csv
+    labSec = args.section
+    aNo = args.no if len(args.no) == 2 else '0' + args.no
     from extract_grades import extract_grades
     grades = {}
     for labSecChar in labSec:
@@ -98,7 +104,7 @@ if __name__ == "__main__":
     # grades = lab01grades
     grades = parseGrades(grades)
     collabs = {}
-    if len(sys.argv)==5 and sys.argv[-1] != 'N':
+    if args.collabs == 'Y':
         for labSecChar in labSec:
             collabs.update(getCollabs(labSecChar,aNo))
         # print (collabs)
