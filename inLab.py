@@ -42,6 +42,8 @@ rando = [i+1 for i in range(41)]
 rando.remove(22) # Remove instructor's seat
 
 def randomize():
+    rando = [i+1 for i in range(len(students) + 1)]
+    rando.remove(22) # Remove instructor's seat
     random.shuffle(rando)
     for i, key in enumerate(students):
         value = students[key]
