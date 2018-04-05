@@ -34,4 +34,10 @@ def getCollabs(labSec, labNo):
     return collabs
 
 if __name__ == '__main__':
-    print (getCollabs(sys.argv[1],sys.argv[2]))
+    import argparse
+    parser = argparse.ArgumentParser(description='Extract collaborators from NB grader and output collab info')
+    parser.add_argument('section', metavar='{A-Q}', nargs='?', help='section name (one character)')
+    parser.add_argument('no' , metavar='XX', nargs='?', help='labNo')
+    
+    args = parser.parse_args()
+    print (getCollabs(args.section, args.no))

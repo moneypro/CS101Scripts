@@ -83,15 +83,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Extract grades from NB grader and output compass compatible csv files.')
     parser.add_argument('csv', metavar='gc...csv', nargs='?', help='csv downloaded from Compass (comma separated)')
     parser.add_argument('section', metavar='{A-Q}', nargs='?', help='section names (multiple supported)')
-    parser.add_argument('no', metavar='XX', nargs='?', help='labNo')
-    parser.add_argument('--collabs', metavar="Y/N", nargs = '?', help = "Fetch collaborator information", default="Y")
-    # if len(sys.argv)<4:
-    #     print ("Usage: python ultimateGradeCal.py compassScores.csv labSec({A,B,..,Q}) labNo({00,01...15}) [collabs:Y/N]")
-    #     exit(1)
+    parser.add_argument('no' , metavar='XX', nargs='?', help='labNo')
+    parser.add_argument('-c', '--collabs', metavar="Y/N", nargs = '?', help = "Fetch collaborator information", default="Y")
+    parser.add_argument('-o', '--output', metavar = 'output', nargs = '?', help = 'csv file to upload to compass', default = sys.stdout)
+
     args = parser.parse_args()
     csvfilename = args.csv
     labSec = args.section
     aNo = args.no if len(args.no) == 2 else '0' + args.no
+    sys.stdout = open(args.output, 'w') if args.output != sys.stdout else sys.stdout
     from extract_grades import extract_grades
     grades = {}
     for labSecChar in labSec:
