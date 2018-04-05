@@ -1,6 +1,6 @@
 import sys
 from numpy import isclose
-from hw01.hw01 import correctAnswers
+from lab01.lab01 import correctAnswers
 
 def getIdFromPath(path):
 	'''
@@ -68,8 +68,12 @@ def gradeContent(arr):
 			if assertSame(actual, answer) == 1:
 				total_correct += 1
 			else:
+				print (actual, answer)
 				if 'errors' in globals():
-					errors[coords] +=1
+					if coords in errors:
+						errors[coords] +=1
+					else:
+						errors[coords] = 1
 		except IndexError:
 			# print ('IndexError')
 			continue
@@ -113,5 +117,8 @@ def readFileByOneReference(answerFileName, filenames):
 
 if __name__ == "__main__":
 	#print (readFileByOneReference(sys.argv[1], sys.argv[2:]))
-	print (readFileAndGrade(sys.argv[1:]))
+	global errors
+	errors = {}
+	(readFileAndGrade(sys.argv[1:]))
+	print (errors)
 
