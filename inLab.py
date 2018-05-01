@@ -49,10 +49,10 @@ def main():
     parser = argparse.ArgumentParser(description='Print out information for lab seat assignments. Seat 22 is automatically removed.')
     parser.add_argument('csv', metavar='gc...csv', nargs='?', help='csv downloaded from Compass (comma separated)')
     parser.add_argument('section', metavar='{A-Q}', nargs='?', help='section name')
-    parser.add_argument('-p', '--print', action = 'store_const', const = True, help = "Print seat assignments.")
+    parser.add_argument('-s', '--show', action = 'store_const', const = True, help = "Print seat assignments.")
     parser.add_argument('-e', '--email', action = 'store_const', const = True, help = "Email students immediately")
     parser.add_argument('-nl', '--noloop', action = 'store_const', const = True, help = "No loop runned.")
-    parser.add_argument('-s', '--save', default = 'inLabOutput.csv', help = "Save first randomized assignment to a file.")
+    parser.add_argument('-o', '--output', default = 'inLabOutput.csv', help = "Save first randomized assignment to a file.")
 
     args = parser.parse_args()
     csvfilename = args.csv
@@ -97,13 +97,13 @@ def main():
 
     students = randomize(students)
 
-    if args.print:
+    if args.show:
         printInfo(students)
 
     if args.email:
         sendEmail(students)
 
-    saveSeats(students, args.save)
+    saveSeats(students, args.output)
 
     if not args.noloop:
         while True:
